@@ -65,10 +65,9 @@ public class Contact {
     @Override
     public String toString() {
         return String.format("""
-            ID: %d
-            Name: %s %s
+            Name: %s
             Emails: %s
             Phone Numbers: %s
-            """, id, name, emails, phoneNumbers);
+            """, name, emails, phoneNumbers);
     }
 }

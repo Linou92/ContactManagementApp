@@ -4,7 +4,7 @@ public class ContactApp {
 
     private static final ContactService service = new ContactService();
 
-    private static void run() {
+    static void run() {
 
         int choice;
 
@@ -22,6 +22,26 @@ public class ContactApp {
         } while (choice != 4);
     }
 
+    private static void contactMenu(Contact contact) {
+
+        int choice;
+
+        do {
+            Printer.printContactMenu();
+            choice = Integer.parseInt(IO.readln("Choose an option: "));
+
+            switch (choice) {
+                case 1 -> addPhone(contact);
+                case 2 -> addEmail(contact);
+                case 3 -> editName(contact);
+                case 4 -> deleteContact(contact);
+                case 5 -> IO.println("Back to main menu");
+                default -> IO.println("Invalid option");
+            }
+
+        } while (choice != 5);
+    }
+
     private static void searchContact(){
         String name = IO.readln("Enter name to search: ");
         var results = service.findByName(name);
@@ -30,7 +50,17 @@ public class ContactApp {
             return;
         }
         IO.println("\n--- SEARCH RESULTS ---");
-        Printer.printAllContacts(results);
+        for (Contact contact : results) {
+            IO.println(contact.getId() + ": " + contact.getName());
+        }
+        int id = Integer.parseInt(IO.readln("Select contact id: "));
+        Contact contact = service.findById(id);
+        if (contact != null) {
+            contactMenu(contact);
+        }
+        else  {
+            IO.println("Invalid selection.");
+        }
     }
 
     private static void addContact(){
@@ -50,5 +80,28 @@ public class ContactApp {
             contact.addEmail(email);
         }
         IO.println("\n--- CONTACT ADDED SUCCESSFULLY ---\n");
+    }
+
+    private static void addPhone(Contact contact) {
+        String phone = IO.readln("Enter phone: ");
+        boolean added = contact.addPhoneNumber(phone);
+        IO.println(added ? "Added phone!" : "Phone already exists!");
+    }
+
+    private static void addEmail(Contact contact) {
+        String email = IO.readln("Enter email: ");
+        boolean added = contact.addEmail(email);
+        IO.println(added ? "Email added!" : "Email already exists!");
+    }
+
+    private static void editName(Contact contact) {
+        String name = IO.readln("Enter new name: ");
+        contact.setName(name);
+        IO.println("Name updated!");
+    }
+
+    private static void deleteContact(Contact contact) {
+        boolean removed = service.deleteContact(contact.getId());
+        IO.println(removed ? "Contact deleted!" : "Failed to delete contact!");
     }
 }

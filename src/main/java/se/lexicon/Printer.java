@@ -6,11 +6,22 @@ public class Printer {
 
     public static void printMainMenu() {
         IO.println("""
-                ===== CONTACT MANAGER =====
+                ===== CONTACT MANAGER APP =====
                 1. List ALl Contacts
                 2. Add Contact
                 3. Search Contact
                 4. Exit
+                """);
+    }
+
+    public static void printContactMenu() {
+        IO.println("""
+                --- CONTACT MENU ---
+                1. Add Phone Number
+                2. Add Email
+                3. Edit Name
+                4. Delete Contact
+                5. Back
                 """);
     }
 
