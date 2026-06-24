@@ -27,6 +27,7 @@ public class ContactApp {
         int choice;
 
         do {
+            IO.print(contact);
             Printer.printContactMenu();
             choice = Integer.parseInt(IO.readln("Choose an option: "));
 
@@ -34,7 +35,10 @@ public class ContactApp {
                 case 1 -> addPhone(contact);
                 case 2 -> addEmail(contact);
                 case 3 -> editName(contact);
-                case 4 -> deleteContact(contact);
+                case 4 -> {
+                    deleteContact(contact);
+                    return;
+                }
                 case 5 -> IO.println("Back to main menu");
                 default -> IO.println("Invalid option");
             }
@@ -63,35 +67,38 @@ public class ContactApp {
         }
     }
 
-    private static void addContact(){
+    private static void addContact() {
         String name = IO.readln("Enter name to add: ");
         Contact contact = service.createContact(name);
-
-        while (true){
-            String phone = IO.readln("Enter phone number to add (empty to stop): ");
-            if(phone.isBlank()){
-                break;
-            }
-            contact.addPhoneNumber(phone);
-            String email = IO.readln("Enter email to add (empty to stop): ");
-            if(email.isBlank()){
-                break;
-            }
-            contact.addEmail(email);
-        }
+        addPhone(contact);
+        addEmail(contact);
         IO.println("\n--- CONTACT ADDED SUCCESSFULLY ---\n");
     }
 
     private static void addPhone(Contact contact) {
-        String phone = IO.readln("Enter phone: ");
-        boolean added = contact.addPhoneNumber(phone);
-        IO.println(added ? "Added phone!" : "Phone already exists!");
+        while (true) {
+            String phone = IO.readln("Enter phone (empty to stop): ");
+            if (phone.isBlank()) break;
+            try {
+                InputValidator.isValidPhoneNumber(phone);
+                contact.addPhoneNumber(phone);
+            } catch (IllegalArgumentException e) {
+                IO.println(e.getMessage());
+            }
+        }
     }
 
     private static void addEmail(Contact contact) {
-        String email = IO.readln("Enter email: ");
-        boolean added = contact.addEmail(email);
-        IO.println(added ? "Email added!" : "Email already exists!");
+        while (true) {
+            String email = IO.readln("Enter email (empty to stop): ");
+            if (email.isBlank()) break;
+            try {
+                InputValidator.isValidEmail(email);
+                contact.addEmail(email);
+            } catch (IllegalArgumentException e) {
+                IO.println(e.getMessage());
+            }
+        }
     }
 
     private static void editName(Contact contact) {
