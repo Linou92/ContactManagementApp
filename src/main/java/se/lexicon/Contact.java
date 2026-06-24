@@ -73,32 +73,18 @@ public class Contact {
             Name: %s
             Emails: %s
             Phone Numbers: %s
-            """, name, formatEmails(), formatPhoneNumbers());
+            """, name, format(emails), format(phoneNumbers));
     }
 
     // helpers
-    public String formatEmails() {
-        if (emails.isEmpty()) return "None";
+    public String format(Set<String> values) {
+        if (values.isEmpty()) return "None";
         StringBuilder sb = new StringBuilder();
         int i = 1;
-        for (String email : emails) {
+        for (String value : values) {
             sb.append(i++)
                     .append(". ")
-                    .append(email)
-                    .append("\n");
-        }
-
-        return sb.toString();
-    }
-
-    public String formatPhoneNumbers() {
-        if (phoneNumbers.isEmpty()) return "None";
-        StringBuilder sb = new StringBuilder();
-        int i = 1;
-        for (String phone : phoneNumbers) {
-            sb.append(i++)
-                    .append(". ")
-                    .append(phone)
+                    .append(value)
                     .append("\n");
         }
         return sb.toString();

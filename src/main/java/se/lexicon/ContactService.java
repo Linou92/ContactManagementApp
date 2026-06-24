@@ -38,26 +38,4 @@ public class ContactService {
     public boolean deleteContact(int id) {
         return contacts.remove(id) != null;
     }
-
-    // update name
-    /*public boolean updateName(int id, String name){
-        Contact contact = contacts.get(id);
-        if(contact == null) return false;
-        if(name != null && !name.isBlank()) contact.setName(name);
-        return true;
-    }*/
-
-    // add phone number
-    public boolean addPhoneNumber(int id, String number){
-        Contact contact = contacts.get(id);
-        if(contact == null) return false;
-        return contact.addPhoneNumber(number);
-    }
-
-    // add email
-    public boolean addEmail(int id, String email){
-        Contact contact = contacts.get(id);
-        if(contact == null) return false;
-        return contact.addEmail(email);
-    }
 }
