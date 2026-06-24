@@ -32,6 +32,9 @@ public class Printer {
             return;
         }
         IO.println("\n--- ALL CONTACT LIST ---");
-        contacts.forEach(IO::println);
+        contacts.stream()
+                .sorted((c1, c2) ->
+                        c1.getName().compareToIgnoreCase(c2.getName()))
+                .forEach(IO::println);
     }
 }

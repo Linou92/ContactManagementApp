@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ContactService {
 
-    private static final Map<Integer, Contact> contacts = new HashMap<>();
+    private final Map<Integer, Contact> contacts = new HashMap<>();
     private int id = 1;
 
     public Contact createContact(String name) {
@@ -15,11 +15,6 @@ public class ContactService {
         contacts.put(contact.getId(), contact);
         return contact;
     }
-
-    // add a contact to the hashmap
-   /* public static void addContact(Contact contact) {
-        contacts.put(contact.getId(), contact);
-    }*/
 
     // return a copy of the list
     public List<Contact> getAllContacts() {
@@ -45,12 +40,12 @@ public class ContactService {
     }
 
     // update name
-    public boolean updateName(int id, String name){
+    /*public boolean updateName(int id, String name){
         Contact contact = contacts.get(id);
         if(contact == null) return false;
         if(name != null && !name.isBlank()) contact.setName(name);
         return true;
-    }
+    }*/
 
     // add phone number
     public boolean addPhoneNumber(int id, String number){

@@ -27,6 +27,7 @@ public class ContactApp {
         int choice;
 
         do {
+            IO.print(contact);
             Printer.printContactMenu();
             choice = Integer.parseInt(IO.readln("Choose an option: "));
 
@@ -34,7 +35,10 @@ public class ContactApp {
                 case 1 -> addPhone(contact);
                 case 2 -> addEmail(contact);
                 case 3 -> editName(contact);
-                case 4 -> deleteContact(contact);
+                case 4 -> {
+                    deleteContact(contact);
+                    return;
+                }
                 case 5 -> IO.println("Back to main menu");
                 default -> IO.println("Invalid option");
             }
@@ -63,20 +67,18 @@ public class ContactApp {
         }
     }
 
-    private static void addContact(){
+    private static void addContact() {
         String name = IO.readln("Enter name to add: ");
         Contact contact = service.createContact(name);
 
-        while (true){
+        while (true) {
             String phone = IO.readln("Enter phone number to add (empty to stop): ");
-            if(phone.isBlank()){
-                break;
-            }
+            if (phone.isBlank()) break;
             contact.addPhoneNumber(phone);
+        }
+        while (true) {
             String email = IO.readln("Enter email to add (empty to stop): ");
-            if(email.isBlank()){
-                break;
-            }
+            if (email.isBlank()) break;
             contact.addEmail(email);
         }
         IO.println("\n--- CONTACT ADDED SUCCESSFULLY ---\n");

@@ -61,6 +61,11 @@ public class Contact {
         return id == contact.id; // if same id then equal
     }
 
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+
     // how to show the contact
     @Override
     public String toString() {
