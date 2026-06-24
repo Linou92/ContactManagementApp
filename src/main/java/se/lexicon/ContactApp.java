@@ -76,7 +76,13 @@ public class ContactApp {
     }
 
     private static void addContact() {
-        String name = IO.readln("Enter name to add: ");
+        String name = IO.readln("Enter name: ");
+        try {
+            InputValidator.isValidName(name);
+        } catch (IllegalArgumentException e) {
+            IO.println(e.getMessage());
+            return;
+        }
         Contact contact = service.createContact(name);
         addPhone(contact);
         addEmail(contact);
