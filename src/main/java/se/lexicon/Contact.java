@@ -10,7 +10,7 @@ public class Contact {
     private Set<String> emails;
     private Set<String> phoneNumbers; // to prevent duplicate phone numbers
 
-    public Contact(int id, String name, String email, Set<String> phoneNumbers) {
+    public Contact(int id, String name) {
         this.id = id;
         this.name = name;
         this.emails = new HashSet<>();
@@ -33,24 +33,24 @@ public class Contact {
         return emails;
     }
 
-    public void addEmail(String email) {
-        this.emails.add(email);
+    public boolean addEmail(String email) {
+        return emails.add(email);
     }
 
     public void removeEmail(String email) {
-        this.emails.remove(email);
+        emails.remove(email);
     }
 
     public Set<String> getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public void addPhoneNumber(String phoneNumber) {
-        this.phoneNumbers.add(phoneNumber);
+    public boolean addPhoneNumber(String phoneNumber) {
+        return phoneNumbers.add(phoneNumber);
     }
 
     public void removePhoneNumber(String phoneNumber) {
-        this.phoneNumbers.remove(phoneNumber);
+        phoneNumbers.remove(phoneNumber);
     }
 
     // defines when 2 contacts objects are equal
@@ -62,6 +62,7 @@ public class Contact {
     }
 
     // how to show the contact
+    @Override
     public String toString() {
         return String.format("""
             ID: %d
