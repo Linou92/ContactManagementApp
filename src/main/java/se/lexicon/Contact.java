@@ -68,6 +68,39 @@ public class Contact {
             Name: %s
             Emails: %s
             Phone Numbers: %s
-            """, name, emails, phoneNumbers);
+            """, name, formatEmails(), formatPhoneNumbers());
+    }
+
+    // helpers
+    public String formatEmails() {
+        if (emails.isEmpty()) return "None";
+
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+
+        for (String email : emails) {
+            sb.append(i++)
+                    .append(". ")
+                    .append(email)
+                    .append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    public String formatPhoneNumbers() {
+        if (phoneNumbers.isEmpty()) return "None";
+
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+
+        for (String phone : phoneNumbers) {
+            sb.append(i++)
+                    .append(". ")
+                    .append(phone)
+                    .append("\n");
+        }
+
+        return sb.toString();
     }
 }

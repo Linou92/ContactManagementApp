@@ -18,10 +18,14 @@ public class Printer {
         IO.println("""
                 --- CONTACT MENU ---
                 1. Add Phone Number
-                2. Add Email
-                3. Edit Name
-                4. Delete Contact
-                5. Back
+                2. Edit Phone Number
+                3. Delete Phone Number
+                4. Add Email
+                5. Edit Email
+                6. Delete Email
+                7. Edit Name
+                8. Delete Contact
+                9. Back
                 """);
     }
 
