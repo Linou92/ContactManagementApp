@@ -33,7 +33,7 @@ public class ContactApp {
             IO.print(contact);
             Printer.printContactMenu();
             choice = Integer.parseInt(IO.readln("Choose an option: "));
-
+            switch (choice) {
                 case 1 -> addPhone(contact);
                 case 2 -> editPhone(contact);
                 case 3 -> deletePhone(contact);
@@ -51,7 +51,6 @@ public class ContactApp {
                 }
                 default -> IO.println("Invalid option");
             }
-
         } while (choice != 9);
     }
 
@@ -82,6 +81,19 @@ public class ContactApp {
         addPhone(contact);
         addEmail(contact);
         IO.println("\n--- CONTACT ADDED SUCCESSFULLY ---\n");
+    }
+
+    private static void addPhone(Contact contact) {
+        while (true) {
+            String phone = IO.readln("Enter phone to add (empty to stop): ");
+            if (phone.isBlank()) break;
+            try {
+                InputValidator.isValidPhoneNumber(phone);
+                contact.addPhoneNumber(phone);
+            } catch (IllegalArgumentException e) {
+                IO.println(e.getMessage());
+            }
+        }
     }
 
     private static void editPhone(Contact contact) {
@@ -127,7 +139,7 @@ public class ContactApp {
 
     private static void addEmail(Contact contact) {
         while (true) {
-            String email = IO.readln("Enter email (empty to stop): ");
+            String email = IO.readln("Enter email to add (empty to stop): ");
             if (email.isBlank()) break;
             try {
                 InputValidator.isValidEmail(email);
