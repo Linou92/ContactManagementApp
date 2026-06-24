@@ -9,6 +9,7 @@ public class ContactApp {
 
     static void run() {
 
+        service.importContacts(FileService.load());
         int choice;
 
         do{
@@ -19,7 +20,7 @@ public class ContactApp {
                 case 1 -> Printer.printAllContacts(service.getAllContacts());
                 case 2 -> addContact();
                 case 3 -> searchContact();
-                case 4 -> IO.println("Exit");
+                case 4 -> exitApp();
                 default -> IO.println("Invalid option, try again.");
             }
         } while (choice != 4);
@@ -206,5 +207,10 @@ public class ContactApp {
     private static void deleteContact(Contact contact) {
         boolean removed = service.deleteContact(contact.getId());
         IO.println(removed ? "Contact deleted!" : "Failed to delete contact!");
+    }
+
+    private static void exitApp() {
+        FileService.save(service.getAllContacts());
+        IO.println("Contacts saved. Goodbye!");
     }
 }
