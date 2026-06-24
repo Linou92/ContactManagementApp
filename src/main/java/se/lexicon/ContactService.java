@@ -11,13 +11,15 @@ public class ContactService {
     private int id = 1;
 
     public Contact createContact(String name) {
-        return new Contact(id++, name);
+        Contact contact = new Contact(id++, name);
+        contacts.put(contact.getId(), contact);
+        return contact;
     }
 
     // add a contact to the hashmap
-    public static void addContact(Contact contact) {
+   /* public static void addContact(Contact contact) {
         contacts.put(contact.getId(), contact);
-    }
+    }*/
 
     // return a copy of the list
     public List<Contact> getAllContacts() {
@@ -30,6 +32,11 @@ public class ContactService {
                 .filter(c -> c.getName().toLowerCase()
                         .contains(name.toLowerCase()))
                 .toList();
+    }
+
+    // find contact by id
+    public Contact findById(int id) {
+        return contacts.get(id);
     }
 
     // delete a contact by id if not already removed
