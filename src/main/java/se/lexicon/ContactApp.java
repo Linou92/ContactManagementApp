@@ -1,5 +1,8 @@
 package se.lexicon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactApp {
 
     private static final ContactService service = new ContactService();
@@ -31,19 +34,25 @@ public class ContactApp {
             Printer.printContactMenu();
             choice = Integer.parseInt(IO.readln("Choose an option: "));
 
-            switch (choice) {
                 case 1 -> addPhone(contact);
-                case 2 -> addEmail(contact);
-                case 3 -> editName(contact);
-                case 4 -> {
+                case 2 -> editPhone(contact);
+                case 3 -> deletePhone(contact);
+                case 4 -> addEmail(contact);
+                case 5 -> editEmail(contact);
+                case 6 -> deleteEmail(contact);
+                case 7 -> editName(contact);
+                case 8 -> {
                     deleteContact(contact);
                     return;
                 }
-                case 5 -> IO.println("Back to main menu");
+                case 9 -> {
+                    IO.println("Back to main menu");
+                    return;
+                }
                 default -> IO.println("Invalid option");
             }
 
-        } while (choice != 5);
+        } while (choice != 9);
     }
 
     private static void searchContact(){
@@ -55,7 +64,7 @@ public class ContactApp {
         }
         IO.println("\n--- SEARCH RESULTS ---");
         for (Contact contact : results) {
-            IO.println(contact.getId() + ": " + contact.getName());
+            IO.println(contact.getId() + ". " + contact.getName());
         }
         int id = Integer.parseInt(IO.readln("Select contact id: "));
         Contact contact = service.findById(id);
@@ -70,30 +79,104 @@ public class ContactApp {
     private static void addContact() {
         String name = IO.readln("Enter name to add: ");
         Contact contact = service.createContact(name);
-
-        while (true) {
-            String phone = IO.readln("Enter phone number to add (empty to stop): ");
-            if (phone.isBlank()) break;
-            contact.addPhoneNumber(phone);
-        }
-        while (true) {
-            String email = IO.readln("Enter email to add (empty to stop): ");
-            if (email.isBlank()) break;
-            contact.addEmail(email);
-        }
+        addPhone(contact);
+        addEmail(contact);
         IO.println("\n--- CONTACT ADDED SUCCESSFULLY ---\n");
     }
 
-    private static void addPhone(Contact contact) {
-        String phone = IO.readln("Enter phone: ");
-        boolean added = contact.addPhoneNumber(phone);
-        IO.println(added ? "Added phone!" : "Phone already exists!");
+    private static void editPhone(Contact contact) {
+        List<String> phones = new ArrayList<>(contact.getPhoneNumbers());
+        for (int i = 0; i < phones.size(); i++) {
+            IO.println((i + 1) + ". " + phones.get(i));
+        }
+        int index = Integer.parseInt(IO.readln("Select phone to edit: ")) - 1;
+        if (index < 0 || index >= phones.size()) {
+            IO.println("Invalid selection.");
+            return;
+        }
+        String oldPhone = phones.get(index);
+        String newPhone = IO.readln("Enter new phone: ");
+        try {
+            InputValidator.isValidPhoneNumber(newPhone);
+            contact.removePhoneNumber(oldPhone);
+            contact.addPhoneNumber(newPhone);
+            IO.println("Phone updated!");
+        } catch (IllegalArgumentException e) {
+            IO.println(e.getMessage());
+        }
+    }
+
+    private static void deletePhone(Contact contact) {
+        List<String> phones = new ArrayList<>(contact.getPhoneNumbers());
+        if (phones.isEmpty()) {
+            IO.println("No phone numbers to delete.");
+            return;
+        }
+        for (int i = 0; i < phones.size(); i++) {
+            IO.println((i + 1) + ". " + phones.get(i));
+        }
+        int choice = Integer.parseInt(IO.readln("Select phone to delete: ")) - 1;
+        if (choice < 0 || choice >= phones.size()) {
+            IO.println("Invalid selection.");
+            return;
+        }
+        String removed = phones.get(choice);
+        contact.removePhoneNumber(removed);
+        IO.println("Phone deleted!");
     }
 
     private static void addEmail(Contact contact) {
-        String email = IO.readln("Enter email: ");
-        boolean added = contact.addEmail(email);
-        IO.println(added ? "Email added!" : "Email already exists!");
+        while (true) {
+            String email = IO.readln("Enter email (empty to stop): ");
+            if (email.isBlank()) break;
+            try {
+                InputValidator.isValidEmail(email);
+                contact.addEmail(email);
+            } catch (IllegalArgumentException e) {
+                IO.println(e.getMessage());
+            }
+        }
+    }
+
+    private static void editEmail(Contact contact) {
+        List<String> emails = new ArrayList<>(contact.getEmails());
+        for (int i = 0; i < emails.size(); i++) {
+            IO.println((i + 1) + ". " + emails.get(i));
+        }
+        int index = Integer.parseInt(IO.readln("Select email to edit: ")) - 1;
+        if (index < 0 || index >= emails.size()) {
+            IO.println("Invalid selection.");
+            return;
+        }
+        String oldEmail = emails.get(index);
+        String newEmail = IO.readln("Enter new email: ");
+        try {
+            InputValidator.isValidEmail(newEmail);
+            contact.removeEmail(oldEmail);
+            contact.addEmail(newEmail);
+            IO.println("Email updated!");
+        } catch (IllegalArgumentException e) {
+            IO.println(e.getMessage());
+        }
+    }
+
+    private static void deleteEmail(Contact contact) {
+        List<String> emails = new ArrayList<>(contact.getEmails());
+        if (emails.isEmpty()) {
+            IO.println("No emails to delete.");
+            return;
+        }
+        for (int i = 0; i < emails.size(); i++) {
+            IO.println((i + 1) + ". " + emails.get(i));
+        }
+        int choice = Integer.parseInt(IO.readln("Select email to delete: ")) - 1;
+        if (choice < 0 || choice >= emails.size()) {
+            IO.println("Invalid selection.");
+            return;
+        }
+        String removed = emails.get(choice);
+        contact.removeEmail(removed);
+        IO.println("Email deleted!");
     }
 
     private static void editName(Contact contact) {
