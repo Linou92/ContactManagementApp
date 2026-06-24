@@ -38,4 +38,15 @@ public class ContactService {
     public boolean deleteContact(int id) {
         return contacts.remove(id) != null;
     }
+
+    // import contacts file
+    public void importContacts(List<Contact> importedContacts) {
+        for (Contact con : importedContacts) {
+            contacts.put(con.getId(), con);
+            // keep id counter safe
+            if(con.getId() >= id){
+                id =  con.getId()+1;
+            }
+        }
+    }
 }
